@@ -1,0 +1,205 @@
+INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+
+CREATE DATABASE furniture;
+USE furniture;
+
+CREATE TABLE customer(
+	cusid VARCHAR(225),
+	name VARCHAR(225),
+	email VARCHAR(225),
+	phonenumber VARCHAR(10),
+	address VARCHAR(225),
+	PRIMARY KEY(cusid)
+);
+
+INSERT INTO customer VALUES ('C001','Saman Kumara','saman@gmail.com','071123325','365/B Colombo Road,Ginthota');
+INSERT INTO customer VALUES ('C002','Janith Nanayakkara','janith@gmail.com','0765739535','450/A Galle Road,Ahangama');
+
+CREATE TABLE customerorder(
+	orderid VARCHAR(225),
+	date DATE,
+	cusid VARCHAR(225),
+	PRIMARY KEY(orderid),
+	FOREIGN KEY(cusid) REFERENCES customer(cusid) on Delete Cascade on Update Cascade
+
+);
+
+INSERT INTO customerorder VALUES ('CO001','75000','C001');
+
+
+
+CREATE TABLE payment(
+	paymentid VARCHAR(225),
+	totalamount VARCHAR(225),
+	orderid VARCHAR(225),
+	PRIMARY KEY(paymentid),
+	FOREIGN KEY(orderid) REFERENCES customerorder(orderid) on Delete Cascade on Update Cascade
+	
+);
+
+INSERT INTO payment VALUES ('P001','75000','CO001');
+
+CREATE TABLE salary(
+	salaryid VARCHAR(225),
+	amount VARCHAR(225),
+	employeeid VARCHAR(225),
+	PRIMARY KEY(salaryid),
+	FOREIGN KEY(employeeid) REFERENCES employee(employeeid)
+
+);
+
+INSERT INTO salary VALUES ('SA001','35000','E001');
+
+CREATE TABLE employee(
+	employeeid VARCHAR(225),
+	name VARCHAR(225),
+	address VARCHAR(225),
+	phonenumber VARCHAR(10),
+	PRIMARY KEY(employeeid)
+);
+
+INSERT INTO employee VALUES ('E001','Hashan Theekshana','35/2 Udugama Road,Udugama','0784561238');
+
+CREATE TABLE item(
+	itemid VARCHAR(225),
+	name VARCHAR(225),
+	unitprice VARCHAR(225),
+	qoh INT,
+	CONSTRAINT PRIMARY KEY(itemid)	
+
+);
+
+INSERT INTO item VALUES ('I001','L Shape Sofas','75000','50');
+INSERT INTO item VALUES ('I002','Dining Tables','45000','30');
+INSERT INTO item VALUES ('I003','Dining Chair','7000','50');
+INSERT INTO item VALUES ('I004','Towel Racks','6000','50');
+INSERT INTO item VALUES ('I005','Sofa Beds','10000','800');
+
+CREATE TABLE returnitem(
+	returnitemid VARCHAR(225),
+	amount VARCHAR(225),
+	retunreason VARCHAR(225),
+	qty int,
+	cusid VARCHAR(225),
+	PRIMARY KEY(returnitemid),
+	FOREIGN KEY(cusid) REFERENCES customer(cusid)
+
+);
+
+INSERT INTO returnitem VALUES ('RT001','25000','Damaged When Delivery',1,'C001');
+
+CREATE TABLE supplier(
+	supplierid VARCHAR(225),
+	name VARCHAR(225),
+	address VARCHAR(225),
+	phonenumber VARCHAR(10),
+	PRIMARY KEY(supplierid)
+	
+);
+
+INSERT INTO supplier VALUES ('S001','Shehan Kavindu','170/B Colombo Road,Boossa','0775364702');
+INSERT INTO supplier VALUES ('S002','Chathushka Savinda','12/C Udugama Road,Kottawa','0771234567');
+
+CREATE TABLE supplierorder(
+	supplierorderid VARCHAR(225),
+	date date,
+	supplierid VARCHAR(225),
+	itemid VARCHAR(225),
+	PRIMARY KEY(supplierorderid),
+	FOREIGN KEY(supplierid) REFERENCES supplier(supplierid),
+	FOREIGN KEY(itemid) REFERENCES item(itemid)
+
+);
+
+
+CREATE TABLE inventory(
+	inventoryid VARCHAR(225),
+	supplierid VARCHAR(225),
+	itemid VARCHAR(225),
+	PRIMARY KEY(inventoryid),
+	FOREIGN KEY(supplierid) REFERENCES supplier(supplierid),
+	FOREIGN KEY(itemid) REFERENCES item(itemid)
+
+
+);
+
+INSERT INTO inventory VALUES ('INVEN001','10','S001','I001');
+
+
+CREATE TABLE admin(
+	userid VARCHAR(225),
+	username VARCHAR(225),
+	password VARCHAR(8),
+	PRIMARY KEY(userid)
+
+);
+
+INSERT INTO admin VALUES ('A001','yasanga','admin123');
+INSERT INTO admin VALUES ('A002','kavishan','kavi1234');
+
+CREATE TABLE manager(
+	managerid VARCHAR(225),
+	username VARCHAR(225),
+	password VARCHAR(8),
+	PRIMARY KEY(managerid)
+	
+);
+
+INSERT INTO manager VALUES ('M001','yasanga','manager1');
+
+
+CREATE TABLE sellerdetails(
+	orderid VARCHAR(225) NOT NULL,
+	itemid VARCHAR(225) NOT NULL,
+	qty int NOT NULL,
+	unitPrice DOUBLE NOT NULL,
+	CONSTRAINT FOREIGN KEY (orderid) REFERENCES customerorder(orderid) on Delete Cascade on Update Cascade,
+	CONSTRAINT FOREIGN KEY (itemid) REFERENCES item(itemid) on Delete Cascade on Update Cascade
+);
+
+CREATE TABLE supplydetail(
+	supplydetailid VARCHAR(225),
+	itemid VARCHAR(225),
+	supplierorderid VARCHAR(225),
+	qty int,
+	unitprice double,
+	PRIMARY KEY(supplydetailid),
+	FOREIGN KEY (itemid) REFERENCES item(itemid),
+	FOREIGN KEY (supplierorderid) REFERENCES supplierorder(supplierorderid)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
